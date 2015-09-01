@@ -1,31 +1,63 @@
-<ion-view view-title="Dashboard"><!-- 
-  <ion-nav-buttons side="left">
-    <button class="button" ng-click="toggleLeft()">
-      <i class="ion-drag"></i>
-    </button>
-  </ion-nav-buttons> -->
+<ion-view view-title="Dashboard">
   <ion-content>
     <ion-refresher
       pulling-text="下拉刷新..."
       on-refresh="doRefresh()">
     </ion-refresher>
-    <ion-list show-delete="data.showDelete" show-reorder="data.showReorder">
-      <div ng-repeat="(key,goods) in goodsList">
-        <div class="item item-divider" ng-if="goods[0]">{{goods[0].activeName}}</div>
-        <ion-item ng-repeat="item in goods" item="item" href="#/item/{{item.id}}" class="item-remove-animate item-avatar item-icon-right item item-complex item-right-editable">
-          <img src="http://www.angularui.cn/bbs/uploads/avatar/2/02/2_big.png">
-          <h2>{{item.name}}</h2>
-          <p>{{item.intro}}</p>
-          <i class="icon ion-chevron-right icon-accessory"></i>
-          <ion-option-button class="button-assertive" ng-click="onItemDelete(item,key)">
-            删除
-          </ion-option-button>
-          <ion-option-button class="button-calm" ng-click="share(item)">
-            分享
-          </ion-option-button>
-          <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
-        </ion-item>
-      </div>
-    </ion-list>
+    <ion-slide-box class="nav-slide">
+      <ion-slide  ng-repeat="v1 in slideNav">
+        <div class="box blue">
+          <div class="row" ng-repeat="v2 in v1">
+            <div class="col" ng-repeat="v3 in v2">
+              <div class="button button-{{v3.color}}">
+                <i class="icon {{v3.icon}}"></i>
+              </div>
+              <span>{{v3.name}}</span>
+            </div>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slide-box>
+    <div class="main">
+      <ion-list class="index-activity">
+        <a class="item item-avatar first" href="#">
+          <img src="img/3.jpg">
+          <h2>1元吃喝玩乐</h2>
+          <p>新用户专享</p>
+        </a>
+        <div class="row">
+          <a class="item item-avatar" href="#">
+            <img src="img/1.jpg">
+            <h2>1元肯德基</h2>
+            <p>新用户专享</p>
+          </a>
+          <a class="item item-avatar" href="#">
+            <img src="img/2.jpg">
+            <h2>1元肯德基</h2>
+            <p>新用户专享</p>
+          </a>
+        </div>
+      </ion-list>
+      <ion-list show-delete="data.showDelete" show-reorder="data.showReorder" class="index-goods">
+        <div ng-repeat="(key,goods) in goodsList" class="goods">
+          <div class="item item-divider" ng-if="goods[0]">
+            <font class="theme-color ctitle">{{goods[0].activeName}}</font><span class="item-note"><a><i class="icon ion-more"></i></a></span>
+          </div>
+          <ion-item ng-repeat="item in goods" item="item" href="#/item/{{item.id}}" class="item item-thumbnail-left item-complex item-icon-right">
+            <img src="{{item.imgUrl}}">
+            <h2>{{item.goodsName}}</h2>
+            <p>{{item.goodsDesc}}</p>
+            <i class="icon ion-chevron-right icon-accessory"></i>
+            <ion-option-button class="button-assertive" ng-click="onItemDelete(item,key)">
+              删除
+            </ion-option-button>
+            <ion-option-button class="button-calm" ng-click="share(item)">
+              分享
+            </ion-option-button>
+            <ion-reorder-button class="ion-navicon" on-reorder="moveItem(item, $fromIndex, $toIndex)"></ion-reorder-button>
+          </ion-item>
+        </div>
+      </ion-list>
+    </div>
   </ion-content>
 </ion-view>

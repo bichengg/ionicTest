@@ -1,2 +1,27 @@
 /* Empty. Add your own CSS if you like */
-*{ font-family: "microsoft yahei" !important}
+* { font-family: "microsoft yahei" !important; text-decoration: none }
+.theme-color { color: #25b7aa; }
+
+/*nav-slide*/
+.nav-slide { padding-bottom: 15px }
+.nav-slide .slider-pager { bottom: 5px; }
+.nav-slide .slider-pager .slider-pager-page { color: #25b7aa; }
+.nav-slide .slider-pager .slider-pager-page i { font-size: 12px }
+.nav-slide .col { text-align: center }
+.nav-slide .col span { font-size: 12px; display: block; }
+.nav-slide .button { border-radius: 50%; border: 0; min-width: 45px; min-height: 40px; }
+.nav-slide .button .icon { vertical-align: middle }
+
+/*index-activity*/
+.main { background: #f5f5f5; overflow: hidden; }
+.index-activity .list { margin-top: 10px; margin-bottom: 10px; }
+.index-activity .row { padding: 0 }
+.index-activity .item-avatar > img { max-width: 55px; max-height: 55px; top: 10px; left: 5px; }
+.index-activity .item { border-bottom: 0 }
+.index-activity .first { padding-right: 170px; border-top: 0; padding-left: 20px}
+.index-activity .first img { max-width: 150px; border-radius: 0; left:auto; right: 5px;}
+
+/*index-goods*/
+.index-goods .item-divider { background: #fff }
+.index-goods .goods:first-child .item-divider { border-top: 0 }
+.index-goods .ctitle { font-size: 18px; }

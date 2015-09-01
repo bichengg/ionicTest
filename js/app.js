@@ -1,8 +1,8 @@
 
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngResource'])
 .value('GRAV', {
-  appid:'8c4dst8wuiimm9nxj8puwrqrhmkxegkl2ittuy6a2jkmx1pl',
-  appkey:'6lqn0keuf89uzoj8px4t47u9e39eimx7jo7ad1qy9pd125nm'
+  appid:'vgy82y1h97o3015mgyzelgmmn028tvcqxl0ruky8czvf5sy3',
+  appkey:'ql6muc3dq86c737cv9lckgct8bqnxhu7qixsqdemcv7tpfb8'
 })
 .value('WX',{
     url:'http://www.angularui.cn/ionic',

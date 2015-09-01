@@ -8,38 +8,61 @@ angular.module('starter.controllers', [])
   $ionicLoading.show({
       template: '加载中...'
   });
+  //
+  $scope.slideNav=[
+    [
+      [
+        {icon:'ion-android-desktop',color:'calm',name:'美食',url:'..'},
+        {icon:'ion-android-bulb',color:'positive',name:'电影',url:'..'},
+        {icon:'ion-android-desktop',color:'balanced',name:'本期推荐',url:'..'},
+        {icon:'ion-android-cart',color:'energized',name:'KTV',url:'..'}
+      ],
+      [
+        {icon:'ion-ios-partlysunny',color:'assertive',name:'酒店',url:'..'},
+        {icon:'ion-ios-film-outline',color:'royal',name:'代金券',url:'..'},
+        {icon:'ion-android-bicycle',color:'calm',name:'周边游',url:'..'},
+        {icon:'ion-ios-telephone',color:'royal',name:'全部分类',url:'..'}
+      ]
+    ],
+    [
+      [
+        {icon:'ion-android-desktop',color:'calm',name:'代金券',url:'..'},
+        {icon:'ion-android-bulb',color:'positive',name:'电影',url:'..'},
+        {icon:'ion-android-bicycle',color:'balanced',name:'酒店',url:'..'},
+        {icon:'ion-android-cart',color:'energized',name:'CC',url:'..'}
+      ],
+      [
+        {icon:'ion-ios-partlysunny',color:'assertive',name:'KTV',url:'..'},
+        {icon:'ion-ios-film-outline',color:'royal',name:'电影',url:'..'},
+        {icon:'ion-android-bicycle',color:'balanced',name:'酒店',url:'..'},
+        {icon:'ion-android-cart',color:'energized',name:'CC',url:'..'}
+      ]
+    ]
+  ];
 
   $scope.goodsList = [];
   //
-  var name = ["grtj","grrm","jfsp","grhl"];
+  var name = ["美食","电影"];
   var nameIndex = 0;
   function getProducts(nameIndex){
 
-          var product = new AV.Query('Product');
+          var product = new AV.Query('Goods');
           //商品类型
           var Cid = new AV.Query('Classify');
-          Cid.equalTo("gjz", name[nameIndex]);
+          Cid.equalTo("classifyName", name[nameIndex]);
           Cid.find().then(function(res){
-              product.equalTo("cid",  parseInt(res[0].id));
-              product.equalTo("status", 1);
+              product.equalTo("classifyID", res[0].id);
+              product.equalTo("status",1);
               product.descending("updatedAt");
               product.limit(4);
               var results = [];
               //查询商品
               product.find().then(function(res2) {
-                  angular.forEach(res2, function (result, index) {
-                      var oo = result.toJSON();
-                      oo.picurlarray = angular.fromJson(oo.picurlarray);
-                      oo.activeName = res[0].toJSON().title;//分类名
-                      oo.activeNameEN = res[0].toJSON().gjz;
-                      for(var key in oo.spec){
-                          $scope.$apply(function() {
-                              oo.product = oo.spec[key];
-                              results.push(oo);
-                          });
-                          break;
-                      }
-                  });
+                  for(var i in res2){
+                    var oo = res2[i].toJSON();
+                    oo.activeName = res[0].toJSON().classifyName;//分类名
+                    results.push(oo);
+                  };
                   $scope.goodsList.push(results);
                   console.log($scope.goodsList);
                   nameIndex++;
@@ -70,7 +93,7 @@ angular.module('starter.controllers', [])
   };
   $scope.share = function(item) {
     $ionicPopup.alert({
-        title:'分享 '+item.name+' 成功！',
+        title:'分享 '+item.goodsName+' 成功！',
         subTitle: '分享获得 5 个积分!',
         okType:'button-balanced',
         okText:'确定'
@@ -89,7 +112,7 @@ angular.module('starter.controllers', [])
     // }
     $ionicPopup.confirm({
       title: '警告',
-      template: '确定删除 '+item.name+' 吗 ?',
+      template: '确定删除 '+item.goodsName+' 吗 ?',
       cancelText: '取消',
       okType:'button-assertive',
       okText:'确定'
