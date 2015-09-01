@@ -2,6 +2,10 @@ angular.module('starter.services', [])
 .factory('Service',  function($http,$resource,WX){
   var APIURL = WX.url;
   var WX = $resource(APIURL,{},{
+      WXOauth2:{
+          method: "GET",
+          url: "/ionic/php/oauth2.php"
+      },
       WXToken:{
           method: "GET",
           url: '/ionic/php/token.php'
@@ -13,9 +17,18 @@ angular.module('starter.services', [])
       WXTicket:{
           method: "GET",
           url: '/ionic/php/ticket.php'
+      },
+      WXUserinfo:{
+          method: "GET",
+          url: "/ionic/php/userinfo.php"
       }
     });
   var Service = {
+    WXOauth2:function(params){
+        return WX.WXOauth2(params).$promise.then(function(res){
+            return res;
+        });
+    },
     WXToken:function(params){
         return WX.WXToken(params).$promise.then(function(res){
            return res;
@@ -23,6 +36,12 @@ angular.module('starter.services', [])
     },
     WXTicket:function(accessToken){
         return WX.WXTicket({'access_token': accessToken}).$promise.then(function(res){
+            return res;
+        })
+    }
+    ,
+    WXUserinfo:function(params){
+        return WX.WXUserinfo(params).$promise.then(function(res){
             return res;
         })
     }

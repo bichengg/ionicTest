@@ -9,7 +9,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     appid:'wxca65cb5d89c2f437',
     secret:'7d72fa1751ab37b8c1510f9fbfcb931d',
 })
-.run(function($ionicPlatform, GRAV, WX, $location, Service) {
+.run(function($ionicPlatform, GRAV, WX, $location, Service, $rootScope) {
   //leancloud配置
   AV.initialize(GRAV.appid,GRAV.appkey);
   //wx配置
@@ -33,8 +33,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
         signature: sign,// 必填，签名，见附录1
         jsApiList: ['getLocation'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
-  }
+  };
+  var url=$location.absUrl();
+  var parames = {};
+  url.replace(/(\w+)=(\w+)/ig, function(a, b, c){parames[b] = c;});
+  var code = parames['code'];
   //
+  var getUser=function(){
+    Service.WXOauth2({'appid':WX.appid,'secret':WX.secret,'code':code}).then(function(res) {
+      Service.WXUserinfo({'access_token':res.access_token,'openid':res.openid}).then(function(res) {
+        $rootScope.userinfo=res;
+      })
+    })
+  }
+  getUser();
   var getTicket=function(){
     Service.WXToken({appid:WX.appid,secret:WX.secret}).then(function(res) {
           Service.WXTicket(res.access_token).then(function (res) {
@@ -49,7 +61,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
           });
       });
   }
-  // var ticket = localStorage.getItem("ticket");
+  var ticket = localStorage.getItem("ticket");
   // if(ticket){
   //   var ticket = angular.fromJson(ticket);
   //   var time = new Date().getTime();
