@@ -25,7 +25,7 @@
           <h2>1元吃喝玩乐</h2>
           <p>新用户专享</p>
         </a>
-        <div class="row">
+        <div class="item-row">
           <a class="item item-avatar" href="#">
             <img src="img/1.jpg">
             <h2>1元肯德基</h2>
@@ -47,7 +47,7 @@
             <img src="{{item.imgUrl}}">
             <h2>{{item.goodsName}}</h2>
             <p class="desc">{{item.goodsDesc}}</p>
-            <p class="theme-color price">￥{{item.price}}</p> <del>{{item.oldPrice}}</del>
+            <p class="theme-color price">¥{{item.price}}</p> <del>¥{{item.oldPrice}}</del>
             <i class="icon ion-chevron-right icon-accessory"></i>
             <ion-option-button class="button-assertive" ng-click="onItemDelete(item,key)">
               删除
