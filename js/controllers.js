@@ -187,7 +187,10 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('GoodDetailCtrl', function($scope, $stateParams, Chats) {
+.controller('GoodDetailCtrl', function($scope, $stateParams, $ionicLoading) {
+  $ionicLoading.show({
+      template: '加载中...'
+  });
   var Cgood={};
   var goodDetail= new AV.Query('Goods');
   goodDetail.equalTo('objectId',$stateParams.goodId)
@@ -206,7 +209,9 @@ angular.module('starter.controllers', [])
     })
   }).catch(function(err){
     alert('产品详情出错了~')
-  });
+  }).finally(function(){
+      $ionicLoading.hide();//loading结束
+    });
 
 
 })
