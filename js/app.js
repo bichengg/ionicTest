@@ -26,7 +26,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     //SHA1加密
     var sign = ("" + CryptoJS.SHA1(signStr));
     wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: WX.appid, // 必填，公众号的唯一标识
         timestamp: time, // 必填，生成签名的时间戳
         nonceStr: nonceStr, // 必填，生成签名的随机串
@@ -123,21 +123,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
+  .state('tab.goods', {
+      url: '/goods',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+        'tab-goods': {
+          templateUrl: 'templates/tab-goods.html',
+          controller: 'GoodsCtrl'
         }
       }
     })
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
+    .state('tab.good-detail', {
+      url: '/goods/:goodId',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+        'tab-goods': {
+          templateUrl: 'templates/good-detail.html',
+          controller: 'GoodDetailCtrl'
         }
       }
     })

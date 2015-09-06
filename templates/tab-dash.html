@@ -1,4 +1,4 @@
-<ion-view view-title="Dashboard">
+<ion-view view-title="首页">
   <ion-content>
     <ion-refresher
       pulling-text="下拉刷新..."
@@ -43,10 +43,11 @@
           <div class="item item-divider" ng-if="goods[0]">
             <font class="theme-color ctitle">{{goods[0].activeName}}</font><span class="item-note"><a><i class="icon ion-more"></i></a></span>
           </div>
-          <ion-item ng-repeat="item in goods" item="item" href="#/item/{{item.id}}" class="item item-thumbnail-left item-complex item-icon-right">
+          <ion-item ng-repeat="item in goods" item="item" href="#/tab/goods/{{item.objectId}}" class="item item-thumbnail-left item-complex item-icon-right">
             <img src="{{item.imgUrl}}">
             <h2>{{item.goodsName}}</h2>
-            <p>{{item.goodsDesc}}</p>
+            <p class="desc">{{item.goodsDesc}}</p>
+            <p class="theme-color price">￥{{item.price}}</p> <del>{{item.oldPrice}}</del>
             <i class="icon ion-chevron-right icon-accessory"></i>
             <ion-option-button class="button-assertive" ng-click="onItemDelete(item,key)">
               删除

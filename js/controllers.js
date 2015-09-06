@@ -126,7 +126,7 @@ angular.module('starter.controllers', [])
   };
   
 })
-.controller('ChatsCtrl', function($scope, Chats, $ionicLoading) {
+.controller('GoodsCtrl', function($scope, Chats, $ionicLoading) {
   $ionicLoading.show({
       template: '加载中...'
   });
@@ -144,7 +144,7 @@ angular.module('starter.controllers', [])
       }
       for (var user in users){
         $scope.$apply(function(){
-          $scope.chats.push(users[user].toJSON());
+          $scope.goods.push(users[user].toJSON());
         })
       }
       $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -160,7 +160,7 @@ angular.module('starter.controllers', [])
       usersJSON.push(users[user].toJSON());
     }
     $scope.$apply(function(){
-      $scope.chats=usersJSON;
+      $scope.goods=usersJSON;
     })
     $ionicLoading.hide();//loading结束
     page++;
@@ -187,8 +187,16 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+.controller('GoodDetailCtrl', function($scope, $stateParams, Chats) {
+
+  var goodDetail= new AV.Query('Goods');
+  goodDetail.equalTo('objectId',$stateParams.goodId)
+  goodDetail.first().then(function(good){
+    $scope.$apply(function(){
+      $scope.good=good.toJSON();
+    })
+  })
+
 })
 
 .controller('AccountCtrl', function($scope, $rootScope) {

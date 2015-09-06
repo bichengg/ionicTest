@@ -1,0 +1,21 @@
+
+<ion-view view-title="{{good.goodsName}}">
+  <!-- <ion-nav-buttons side="left"> -->
+
+  <ion-content class="good-detail">
+  	<div class="list">
+	  <div class="item item-avatar">
+	    <img src="{{good.imgUrl}}">
+	    <h2>{{good.goodsName}}</h2>
+	    <p>{{good.goodsDesc}}</p>
+	  </div>
+	  <div class="item item-image">
+	    <img src="{{good.imgUrl}}">
+	  </div>
+	  <div class="item item-button-right">
+        <font class="theme-color price">￥{{good.price}}</font> <del>￥{{good.oldPrice}}</del>
+        <button class="button button-energized">立即抢购</button>
+      </div>
+	</div>
+  </ion-content>
+</ion-view>
