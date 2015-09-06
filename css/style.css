@@ -1,13 +1,20 @@
 /* Empty. Add your own CSS if you like */
-* { font-family: "microsoft yahei" !important; text-decoration: none }
-del{ text-decoration: line-through !important;}
+* { font-family: "Helvetica" !important; text-decoration: none }
+del { text-decoration: line-through !important; font-size: 12px; }
 .theme-color { color: #25b7aa !important; }
-.item { border-color: #eee}
-.item-divider{ background: #fff}
+.item-row { display: -webkit-box; display: -webkit-flex; display: -moz-box; display: -moz-flex; display: -ms-flexbox; display: flex; padding: 0px; width: 100%; }
+.item-row .item { flex: 1; width: 100%; }
+.item { border-color: #eee }
+.item-divider { background: #fff }
+.item-thin { padding-top: 10px; padding-bottom: 10px }
+.pd0 { padding: 0 !important; }
+.pl16 { padding-left: 16px; }
+.pb10 { padding-bottom: 10px; }
+
 /*nav-slide*/
 .nav-slide { padding-bottom: 15px }
 .nav-slide .slider-pager { bottom: 5px; }
-.nav-slide .slider-pager .slider-pager-page { color: #25b7aa; }
+.nav-slide .slider-pager .slider-pager-page { color: #25b7aa; width: 8px }
 .nav-slide .slider-pager .slider-pager-page i { font-size: 8px }
 .nav-slide .col { text-align: center }
 .nav-slide .col span { font-size: 12px; display: block; }
@@ -17,9 +24,8 @@ del{ text-decoration: line-through !important;}
 /*index-activity*/
 .main { background: #f5f5f5; overflow: hidden; }
 .index-activity .list { margin-top: 10px; margin-bottom: 10px; }
-.index-activity .row { padding: 0 }
 .index-activity .item-avatar > img { max-width: 55px; max-height: 55px; top: 10px; left: 5px; }
-.index-activity .item { border-bottom: 0; flex: 1; width: 100%; }
+.index-activity .item { border-bottom: 0; }
 .index-activity .first { padding-right: 170px; border: 0; padding-left: 20px }
 .index-activity .first img { max-width: 150px; border-radius: 0; left: auto; right: 5px; }
 
@@ -28,8 +34,9 @@ del{ text-decoration: line-through !important;}
 .index-goods .goods:first-child .item-divider { border-top: 0 }
 .index-goods .ctitle { font-size: 18px; }
 .index-goods .item .desc { height: 40px; line-height: 18px; white-space: normal; vertical-align: middle; display: table-cell; }
-.index-goods .item .price { font-size: 18px; display: inline-block; margin-bottom: 0; vertical-align: top;}
-.index-goods .item-complex.item-icon-right .item-content{ padding-right: 16px;}
+.index-goods .item .price { font-size: 20px; display: inline-block; margin-bottom: 0; vertical-align: top; }
+.index-goods .item-complex.item-icon-right .item-content { padding-right: 16px; }
 
 /*good-detail*/
-.good-detail .item .price{ font-size: 22px;}
+.good-detail .item .price { font-size: 30px; }
+.good-detail .item p { white-space: pre-wrap; }
