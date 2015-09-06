@@ -10,10 +10,10 @@
 	    	<p>{{good.goodsDesc}}</p>
 	    </div>
 	    <div class="item item-image">
-	    	<img src="{{good.imgUrl}}" style="height:200px">
+	    	<img src="{{good.imgUrl}}">
 	    </div>
-	    <div class="item item-button-right pb10">
-        	<font class="theme-color price">¥{{good.price}}</font> <del>¥{{good.oldPrice}}</del>
+	    <div class="item item-button-right">
+        	<font class="theme-color price">￥{{good.price}}</font> <del>￥{{good.oldPrice}}</del>
         	<button class="button button-energized">立即抢购</button>
         </div>
 	</div>
@@ -23,41 +23,9 @@
         </div>
 	    <div class="item item-icon-right">
         	{{good.shopinfo.shopName}}
-        	<p>{{good.shopinfo.address}}</p>
+        	<p>{{good.shopinfo.shopDesc}}</p>
         	<i class="icon ion-ios-telephone-outline"></i>
         	<p><i class="ion-ios-location-outline"></i> 0m <a class="energized">离我最近</a></p>
-        </div>
-	</div>
-	<div class="list">
-		<div class="item item-divider">
-            套餐
-        </div>
-	    <div class="item-row" ng-repeat="val in good.content">
-	      <div class="col-50 item pl16 item-thin"><p>{{val.name}}</p></div>
-	      <div class="item item-thin"><p>{{val.num}}</p></div>
-	      <div class="item item-thin"><p>¥{{val.price}}</p></div>
-	    </div>
-        <div class="item">
-        	<p>{{good.remark}}</p>
-        </div>
-        <a class="item item-thin theme-color item-icon-right">
-        	查看图文详情
-        	<i class="icon ion-chevron-right icon-accessory"></i>
-        </a>
-	</div>
-	<div class="list">
-		<div class="item item-divider">
-            购买须知
-        </div>
-        <div class="item">
-        	<h3 class="theme-color">适用范围</h3>
-        	<p>{{good.attention.useRange}}</p><br>
-        	<h3 class="theme-color">有效期</h3>
-        	<p>{{good.attention.validityDay}}</p><br>
-        	<h3 class="theme-color">不可使用日期</h3>
-        	<p>{{good.attention.unDay}}</p><br>
-        	<h3 class="theme-color">使用规则</h3>
-        	<p>{{good.attention.rule}}</p>
         </div>
 	</div>
   </ion-content>
