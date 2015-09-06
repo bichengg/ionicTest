@@ -188,14 +188,26 @@ angular.module('starter.controllers', [])
 })
 
 .controller('GoodDetailCtrl', function($scope, $stateParams, Chats) {
-
+  var Cgood={};
   var goodDetail= new AV.Query('Goods');
   goodDetail.equalTo('objectId',$stateParams.goodId)
   goodDetail.first().then(function(good){
-    $scope.$apply(function(){
-      $scope.good=good.toJSON();
+    Cgood=good.toJSON();
+    var shop=new AV.Query('Shops');
+    shop.equalTo('objectId',good.toJSON().shopID)
+    shop.first().then(function(shop){
+      Cgood.shopinfo=shop.toJSON()
+    }).catch(function(err){
+    alert('商家出错了~')
     })
-  })
+    console.log(Cgood);
+    $scope.$apply(function(){
+      $scope.good=Cgood;
+    })
+  }).catch(function(err){
+    alert('产品详情出错了~')
+  });
+
 
 })
 

@@ -3,6 +3,7 @@
 del{ text-decoration: line-through !important;}
 .theme-color { color: #25b7aa !important; }
 .item { border-color: #eee}
+.item-divider{ background: #fff}
 /*nav-slide*/
 .nav-slide { padding-bottom: 15px }
 .nav-slide .slider-pager { bottom: 5px; }
