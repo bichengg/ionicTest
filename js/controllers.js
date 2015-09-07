@@ -95,7 +95,7 @@ angular.module('starter.controllers', [])
     $ionicPopup.alert({
         title:'分享 '+item.goodsName+' 成功！',
         subTitle: '分享获得 5 个积分!',
-        okType:'button-balanced',
+        okType:'button-theme',
         okText:'确定'
     });
   };
@@ -199,21 +199,49 @@ angular.module('starter.controllers', [])
     var shop=new AV.Query('Shops');
     shop.equalTo('objectId',good.toJSON().shopID)
     shop.first().then(function(shop){
-      Cgood.shopinfo=shop.toJSON()
+      Cgood.shopinfo=shop?shop.toJSON():{};
+      $scope.$apply(function(){
+        $scope.good=Cgood;
+      })
     }).catch(function(err){
     alert('商家出错了~')
     })
     console.log(Cgood);
-    $scope.$apply(function(){
-      $scope.good=Cgood;
-    })
   }).catch(function(err){
     alert('产品详情出错了~')
   }).finally(function(){
       $ionicLoading.hide();//loading结束
-    });
+  });
 
-
+})
+.controller('OrderCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $rootScope){
+  $ionicLoading.show({
+      template: '加载中...'
+  });
+  $scope.num=1;
+  var Cgood={};
+  var goodDetail= new AV.Query('Goods');
+  goodDetail.equalTo('objectId',$stateParams.goodId)
+  goodDetail.first().then(function(good){
+    Cgood=good.toJSON();
+    var user=new AV.Query(AV.User);
+    user.equalTo('openID','omiFct4NQ7NPlsuvAw3YAvg6zG1Y')//测试 $rootScope.userinfo.openid
+    user.first().then(function(res){
+      Cgood.userphone=res?res.toJSON().phone:{};
+      $scope.$apply(function(){
+        $scope.good=Cgood;
+      })
+    }).catch(function(err){
+      alert(err)
+    })
+    console.log(Cgood);
+  }).catch(function(err){
+    alert('订单详情出错了~')
+  }).finally(function(){
+      $ionicLoading.hide();//loading结束
+  });
+  //
+  
 })
 
 .controller('AccountCtrl', function($scope, $rootScope) {
@@ -221,4 +249,35 @@ angular.module('starter.controllers', [])
     $scope.userinfo=$rootScope.userinfo
   })
   
-});
+})
+.controller('PhoneCtrl',  function($scope, $rootScope, $ionicPopup){
+  var phoneNumOK='';
+  $scope.send=function(phoneNum){
+    var checkPhone=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+    if(!checkPhone.test(phoneNum)|| checkPhone==null){
+      $ionicPopup.alert({
+        title:'手机号码格式错误！',
+        subTitle: '请输入11位手机号码!',
+        okType:'button-energized',
+        okText:'确定'
+      });
+    }
+    else{
+      phoneNumOK=phoneNum;
+      AV.Cloud.requestSmsCode(phoneNum).then(function(){
+        //发送成功
+      }, function(err){
+        alert(err)
+      });
+    }
+  };
+  $scope.addPhoneNum=function(checkCode){
+    if(checkCode && phoneNumOK){
+      AV.Cloud.verifySmsCode(checkCode,phoneNumOK).then(function(){
+        alert('验证成功!')
+      }, function(err){
+        alert('验证失败!')
+      });
+    }
+  }
+})

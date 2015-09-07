@@ -1,0 +1,46 @@
+
+<ion-view view-title="提交订单">
+  <ion-content class="good-detail main">
+  	<div class="list">
+        <div class="item item-thin" href="#">
+            {{good.goodsName}}
+            <span class="item-note">{{good.price}} 元</span>
+        </div>
+        <div class="item item-thin" href="#">
+            数量<span class="surplus"><font class="theme-color">剩余 {{good.surplus}} 份</font></span>
+            <span class="item-note">
+                <a class="button button-theme button-small btn-ordernum" ng-click="num=num-1" ng-disabled="num<=1">-</a>
+                <input type="number" ng-model="num" class="ordernum" min="1" max="{{good.surplus}}" disabled>
+                <a class="button button-theme button-small btn-ordernum" ng-click="num=num+1" ng-disabled="num>=good.surplus">+</a>
+            </span>
+        </div>
+        <div class="item item-thin" href="#">
+            小计
+            <span class="item-note assertive">¥ {{num*good.price|| good.price}}</span>
+        </div> 
+    </div>
+    <div class="list">
+        <div class="item item-thin" href="#">
+            抵用券
+            <a class="item-note">使用抵用券 <i class="ion-ios-arrow-right"></i></a>
+        </div>
+        <div class="item item-thin" href="#">
+            订单总价
+            <span class="item-note">共 {{num}} 张 / <font class="assertive">¥ {{num*good.price|| good.price}}</font></span>
+        </div>
+    </div>
+    <div class="list">
+        <div class="item item-thin" href="#">
+            您绑定的手机号码
+        </div>
+        <a class="item item-thin" href="#/tab/phone-bind">
+            {{good.userphone | phoneFormat}}
+            <span class="item-note">绑定新号码 <i class="ion-ios-arrow-right"></i></span>
+        </a>
+    </div>
+    <div class="padding pt0">
+        <button class="button button-full button-energized">提交订单</button>
+    </div>
+    
+  </ion-content>
+</ion-view>

@@ -10,6 +10,11 @@ del { text-decoration: line-through !important; font-size: 12px; }
 .pd0 { padding: 0 !important; }
 .pl16 { padding-left: 16px; }
 .pb10 { padding-bottom: 10px; }
+.pt0 { padding-top: 0 }
+.button.button-theme { border-color: #25b7aa; background-color: #25b7aa; color: #fff; }
+.button:not(.button-outline){ border: 0 !important; }
+.button.button-theme.button-outline { border-color: #25b7aa; background: transparent; color: #25b7aa; }
+.item-input-button { padding-right: 100px !important }
 
 /*nav-slide*/
 .nav-slide { padding-bottom: 15px }
@@ -40,3 +45,8 @@ del { text-decoration: line-through !important; font-size: 12px; }
 /*good-detail*/
 .good-detail .item .price { font-size: 30px; }
 .good-detail .item p { white-space: pre-wrap; }
+
+/*order*/
+.ordernum { border: 1px solid #eee !important; width: 40px; height: 30px !important; display: inline-block !important; text-align: center; -webkit-appearance: caret; appearance: caret; border-radius: 0 }
+.btn-ordernum { display: inline-block !important; font-size: 20px !important; line-height: 1 !important }
+.surplus { position: absolute; bottom: 0; left: 16px; font-size: 10px }

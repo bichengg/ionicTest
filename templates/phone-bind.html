@@ -1,0 +1,21 @@
+
+<ion-view view-title="绑定手机">
+  <ion-content class="main">
+  	<div class="list">
+        <div class="item item-input item-input-button item-button-right">
+            <input type="text" placeholder="请输入手机号码" maxlength="11" ng-model="phoneNum">
+            <button class="button button-small button-outline button-theme" ng-click="send(phoneNum)">
+                发送验证码
+            </button>
+        </div>
+        <label class="item item-input">
+            <input type="text" placeholder="请输入手机短信中的验证码" ng-model="checkCode">
+        </label>
+    </div>
+    
+    <div class="padding pt0">
+        <button class="button button-full button-theme" ng-click="addPhoneNum(checkCode)">验证</button>
+    </div>
+    
+  </ion-content>
+</ion-view>

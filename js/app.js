@@ -95,7 +95,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     }
   });
 })
-
+.filter('phoneFormat',function(){
+  return function(phonenum){
+    return phonenum?phonenum.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'):'您还未绑定手机~'
+  }
+})
 .config(function($stateProvider, $urlRouterProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -132,7 +136,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
         }
       }
     })
-    .state('tab.good-detail', {
+  .state('tab.good-detail', {
       url: '/goods/:goodId',
       views: {
         'tab-goods': {
@@ -141,7 +145,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
         }
       }
     })
-
+  .state('tab.order', {
+      url: '/order/:goodId',
+      views: {
+        'tab-goods': {
+          templateUrl: 'templates/order.html',
+          controller: 'OrderCtrl'
+        }
+      }
+    })
   .state('tab.account', {
     url: '/account',
     views: {
@@ -151,7 +163,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       }
     }
   })
-
+  .state('tab.phone-bind', {
+    url: '/phone-bind',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/phone-bind.html',
+        controller: 'PhoneCtrl'
+      }
+    }
+  })
   .state('demo', {
     url: '/demo',
     templateUrl: 'templates/demo.html'
