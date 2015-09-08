@@ -214,7 +214,7 @@ angular.module('starter.controllers', [])
   });
 
 })
-.controller('OrderCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, $rootScope){
+.controller('OrderCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, CURUSER){
   $ionicLoading.show({
       template: '加载中...'
   });
@@ -224,16 +224,10 @@ angular.module('starter.controllers', [])
   goodDetail.equalTo('objectId',$stateParams.goodId)
   goodDetail.first().then(function(good){
     Cgood=good.toJSON();
-    var user=new AV.Query(AV.User);
-    user.equalTo('openID','omiFct4NQ7NPlsuvAw3YAvg6zG1Y')//测试 $rootScope.userinfo.openid
-    user.first().then(function(res){
-      Cgood.userphone=res?res.toJSON().phone:{};
-      $scope.$apply(function(){
-        $scope.good=Cgood;
-      })
-    }).catch(function(err){
-      alert(err)
-    })
+    //获取用户
+    var curUser = localStorage.getItem(CURUSER.obj);
+    Cgood.userphone=curUser?angular.fromJson(curUser).phone:{};
+    $scope.good=Cgood;
     console.log(Cgood);
   }).catch(function(err){
     alert('订单详情出错了~')
@@ -250,7 +244,7 @@ angular.module('starter.controllers', [])
   })
   
 })
-.controller('PhoneCtrl',  function($scope, $rootScope, $ionicPopup){
+.controller('PhoneCtrl',  function($scope, $rootScope, $ionicPopup, $timeout, $state, CURUSER){
   var phoneNumOK='';
   $scope.send=function(phoneNum){
     var checkPhone=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
@@ -265,19 +259,94 @@ angular.module('starter.controllers', [])
     else{
       phoneNumOK=phoneNum;
       AV.Cloud.requestSmsCode(phoneNum).then(function(){
-        //发送成功
+        var stopwatch=60;
+        $scope.isSend=true;
+        $scope.btnSend=stopwatch+'秒';
+        var myTimer=setInterval(function(){
+          stopwatch--;
+          $scope.btnSend=stopwatch+'秒';
+          $scope.$digest();
+        }, 1000);
+        var timer=$timeout(function(){
+          $scope.isSend=false;
+          $scope.btnSend='发送验证码';
+          clearInterval(myTimer);
+          $timeout.cancel(timer);
+        },60000);
+        var myAlert=$ionicPopup.alert({
+          title:'验证码已发送到您的手机！',
+          subTitle: '请输入6位数验证码!',
+          okType:'button-theme',
+          okText:'确定'
+        });
+        $timeout(function() {
+            myAlert.close(); 
+         }, 2000);
       }, function(err){
-        alert(err)
+        console.log(err.message);
+        var myAlert=$ionicPopup.alert({
+          title:err.message,
+          subTitle: '请10分钟后再试!',
+          okType:'button-theme',
+          okText:'确定'
+        });
+        $timeout(function() {
+            myAlert.close(); 
+         }, 2000);
       });
     }
   };
   $scope.addPhoneNum=function(checkCode){
+    
     if(checkCode && phoneNumOK){
       AV.Cloud.verifySmsCode(checkCode,phoneNumOK).then(function(){
-        alert('验证成功!')
+        var myAlert=$ionicPopup.alert({
+          title:'验证成功！',
+          subTitle: '即将返回上一页!',
+          okType:'button-theme',
+          okText:'确定'
+        });
+        $timeout(function() {
+          var curUser = localStorage.getItem(CURUSER.obj);
+          var curUserObj=angular.fromJson(curUser);
+          curUserObj.phone=phoneNumOK;
+          var user=new AV.Query(AV.User);//修改电话
+          user.get(curUserObj._id, {
+              success: function(res) {
+                res.set('phone', phoneNumOK);
+                res.save();
+              },
+              error: function(object, error) {
+                // 失败了.
+                console.log(object);
+              }
+          });
+          myAlert.close();
+          localStorage.setItem(CURUSER.obj, angular.toJson(curUserObj));
+          $state.go('tab.order',{'goodId':'55e5052a00b0ded317feb220'});
+        }, 2000);
       }, function(err){
-        alert('验证失败!')
+        var myAlert=$ionicPopup.alert({
+          title:err.message,
+          subTitle: '请输入6位数验证码!',
+          okType:'button-energized',
+          okText:'确定'
+        });
+        $timeout(function() {
+            myAlert.close(); 
+        }, 2000);
       });
+    }
+    else{
+      var myAlert=$ionicPopup.alert({
+          title:'验证失败！',
+          subTitle: '请输入正确的6位数验证码!',
+          okType:'button-energized',
+          okText:'确定'
+        });
+        $timeout(function() {
+            myAlert.close(); 
+        }, 2000);
     }
   }
 })

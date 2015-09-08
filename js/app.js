@@ -9,6 +9,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     appid:'wxca65cb5d89c2f437',
     secret:'7d72fa1751ab37b8c1510f9fbfcb931d',
 })
+.value('CURUSER',{
+    obj:'AV/vgy82y1h97o3015mgyzelgmmn028tvcqxl0ruky8czvf5sy3/currentUser'
+})
 .run(function($ionicPlatform, GRAV, WX, $location, Service, $rootScope) {
   //leancloud配置
   AV.initialize(GRAV.appid,GRAV.appkey);
@@ -80,6 +83,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   wx.error(function(res){
      alert('WX出错');
   });
+  AV.User.logIn("test", "123123", {
+    success: function(user) {
+      // 成功了，现在可以做其他事情了.
+      console.log('登录成功');
+    },
+    error: function(user, error) {
+      // 失败了.
+      console.log('失败');
+    }
+  });
+  
 ////////////////////////////////////////
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -148,11 +162,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   .state('tab.order', {
       url: '/order/:goodId',
       views: {
-        'tab-goods': {
+        'tab-goods': { 
           templateUrl: 'templates/order.html',
           controller: 'OrderCtrl'
         }
-      }
+      },
+      cache:false
     })
   .state('tab.account', {
     url: '/account',
