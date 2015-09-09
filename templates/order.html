@@ -1,6 +1,6 @@
 
 <ion-view view-title="提交订单">
-  <ion-content class="good-detail main">
+  <ion-content class="main">
   	<div class="list">
         <div class="item item-thin" href="#">
             {{good.goodsName}}
@@ -16,7 +16,7 @@
         </div>
         <div class="item item-thin" href="#">
             小计
-            <span class="item-note assertive">¥ {{num*good.price|| good.price}}</span>
+            <span class="item-note assertive">¥ {{(num*good.price).toFixed(2)|| good.price}}</span>
         </div> 
     </div>
     <div class="list">
@@ -26,7 +26,7 @@
         </div>
         <div class="item item-thin" href="#">
             订单总价
-            <span class="item-note">共 {{num}} 张 / <font class="assertive">¥ {{num*good.price|| good.price}}</font></span>
+            <span class="item-note">共 {{num}} 张 / <font class="assertive">¥ {{(num*good.price).toFixed(2)|| good.price}}</font></span>
         </div>
     </div>
     <div class="list">
@@ -39,7 +39,7 @@
         </a>
     </div>
     <div class="padding pt0">
-        <button class="button button-full button-energized">提交订单</button>
+        <button class="button button-full button-energized" ng-click="subOrder(num)">提交订单</button>
     </div>
     
   </ion-content>

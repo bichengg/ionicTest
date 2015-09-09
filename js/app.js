@@ -169,6 +169,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       },
       cache:false
     })
+  .state('tab.pay', {
+      url: '/pay',
+      views: {
+        'tab-goods': { 
+          templateUrl: 'templates/pay.html',
+          controller: 'PayCtrl'
+        }
+      },
+      cache:false
+    })
   .state('tab.account', {
     url: '/account',
     views: {

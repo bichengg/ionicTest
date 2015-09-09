@@ -214,19 +214,21 @@ angular.module('starter.controllers', [])
   });
 
 })
-.controller('OrderCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, CURUSER){
+.controller('OrderCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, CURUSER, $state){
   $ionicLoading.show({
       template: '加载中...'
   });
   $scope.num=1;
+  //获取用户
+  var curUser = localStorage.getItem(CURUSER.obj);
+  $scope.user=curUser?angular.fromJson(curUser):{}
+  //套餐信息
   var Cgood={};
   var goodDetail= new AV.Query('Goods');
   goodDetail.equalTo('objectId',$stateParams.goodId)
   goodDetail.first().then(function(good){
     Cgood=good.toJSON();
-    //获取用户
-    var curUser = localStorage.getItem(CURUSER.obj);
-    Cgood.userphone=curUser?angular.fromJson(curUser).phone:{};
+    Cgood.userphone=$scope.user.phone;
     $scope.good=Cgood;
     console.log(Cgood);
   }).catch(function(err){
@@ -235,9 +237,51 @@ angular.module('starter.controllers', [])
       $ionicLoading.hide();//loading结束
   });
   //
+  $scope.subOrder=function(num){
+    //查询是否有重复的未支付订单；
+    var noPayOrder=new AV.Query('Orders');
+    noPayOrder.equalTo('goodID',Cgood.objectId);
+    noPayOrder.equalTo('status',0);
+    noPayOrder.first().then(function(resNoPayOrder){
+      if(resNoPayOrder){//发现重复的 更新数量和单价
+        var updateOrder= new AV.Query('Orders');
+        updateOrder.get(resNoPayOrder.toJSON().objectId, {
+            success: function(res) {
+              res.set('num', num);
+              res.set('amount',(num*Cgood.price).toFixed(2)-0);
+              res.save();
+              $state.go('tab.pay');
+            },
+            error: function(object, error) {
+              // 失败了.
+              console.log(object);
+            }
+        });
+      }
+      else{
+        //提交订单
+        var order= new AV.Object('Orders');
+        order.set('goodID',Cgood.objectId);
+        order.set('num',num);
+        order.set('amount',(num*Cgood.price).toFixed(2)-0);
+        order.set('status',0);
+        order.save().then(function(){
+          alert(1)
+        },function(err){
+          console.log(err.message);
+        });
+      }
+    },function(err){
+      console.log(err.message);
+    });
+    
+
+  }
+})
+.controller('PayCtrl', function($scope) {
+  
   
 })
-
 .controller('AccountCtrl', function($scope, $rootScope) {
   $scope.$apply(function(){
     $scope.userinfo=$rootScope.userinfo
