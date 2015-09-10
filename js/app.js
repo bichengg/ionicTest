@@ -12,7 +12,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
 .value('CURUSER',{
     obj:'AV/vgy82y1h97o3015mgyzelgmmn028tvcqxl0ruky8czvf5sy3/currentUser'
 })
-.run(function($ionicPlatform, GRAV, WX, $location, Service, $rootScope, CURUSER) {
+.run(function($ionicPlatform, GRAV, WX, $location, Service, $rootScope, CURUSER, $state, $timeout, $ionicPopup) {
   //leancloud配置
   AV.initialize(GRAV.appid,GRAV.appkey);
   //wx配置
@@ -45,7 +45,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   var getUser=function(){
     Service.WXOauth2({'appid':WX.appid,'secret':WX.secret,'code':code}).then(function(res) {
       Service.WXUserinfo({'access_token':res.access_token,'openid':res.openid}).then(function(res) {
-        $rootScope.userinfo=res;
+        $rootScope.WXuserInfo=res;
       })
     })
   }
@@ -83,22 +83,40 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   wx.error(function(res){
      alert('WX出错');
   });
-  AV.User.logIn("test", "123123", {
-    success: function(user) {
-      // 成功了，现在可以做其他事情了.
-      console.log('登录成功');
-    },
-    error: function(user, error) {
-      // 失败了.
-      console.log('失败');
-    }
-  });
-  $rootScope.isUserLogin=function(){
+  // AV.User.logIn("test", "123123", {
+  //   success: function(user) {
+  //     // 成功了，现在可以做其他事情了.
+  //     console.log('登录成功');
+  //   },
+  //   error: function(user, error) {
+  //     // 失败了.
+  //     console.log('失败');
+  //   }
+  // });
+  var isUserLogin=function(){
     var curUser = localStorage.getItem(CURUSER.obj);
     curUser=curUser?angular.fromJson(curUser):null;
     console.log(curUser);
     return curUser;
   };
+  $rootScope.userInfo=isUserLogin();
+  $rootScope.noLoginGo=function(){
+    var myAlert=$ionicPopup.alert({
+      title:'请登录',
+      subTitle: '您还没有登录',
+      okType:'button-theme',
+      okText:'确定'
+    });
+    $timeout(function() {
+        myAlert.close(); 
+        $state.go('tab.dash');
+    }, 4000);
+  }
+  $rootScope.$watch('userInfo',function(newValue, oldValue){
+    // console.log(newValue);
+
+    // console.log(oldValue);
+  });
   
 //-----------------------------------------------------
   $ionicPlatform.ready(function() {
