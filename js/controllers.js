@@ -214,14 +214,15 @@ angular.module('starter.controllers', [])
   });
 
 })
-.controller('OrderCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, CURUSER, $state){
+.controller('OrderCtrl', function($scope, $stateParams, $ionicLoading, $ionicPopup, CURUSER, $state, $rootScope){
   $ionicLoading.show({
       template: '加载中...'
   });
   $scope.num=1;
   //获取用户
-  var curUser = localStorage.getItem(CURUSER.obj);
-  $scope.user=curUser?angular.fromJson(curUser):{}
+  $scope.user=$rootScope.isUserLogin();
+  if(!$scope.user)
+    return false;
   //套餐信息
   var Cgood={};
   var goodDetail= new AV.Query('Goods');
@@ -236,46 +237,54 @@ angular.module('starter.controllers', [])
   }).finally(function(){
       $ionicLoading.hide();//loading结束
   });
+  
   //
   $scope.subOrder=function(num){
+    // $scope.user._sessionToken='1231231';
+    // localStorage.setItem(CURUSER.obj, angular.toJson($scope.user));
     //查询是否有重复的未支付订单；
-    var noPayOrder=new AV.Query('Orders');
-    noPayOrder.equalTo('goodID',Cgood.objectId);
-    noPayOrder.equalTo('status',0);
-    noPayOrder.first().then(function(resNoPayOrder){
-      if(resNoPayOrder){//发现重复的 更新数量和单价
-        var updateOrder= new AV.Query('Orders');
-        updateOrder.get(resNoPayOrder.toJSON().objectId, {
-            success: function(res) {
-              res.set('num', num);
-              res.set('amount',(num*Cgood.price).toFixed(2)-0);
-              res.save();
-              $state.go('tab.pay');
-            },
-            error: function(object, error) {
-              // 失败了.
-              console.log(object);
-            }
-        });
-      }
-      else{
-        //提交订单
-        var order= new AV.Object('Orders');
-        order.set('goodID',Cgood.objectId);
-        order.set('num',num);
-        order.set('amount',(num*Cgood.price).toFixed(2)-0);
-        order.set('status',0);
-        order.save().then(function(){
-          alert(1)
-        },function(err){
-          console.log(err.message);
-        });
-      }
-    },function(err){
-      console.log(err.message);
-    });
-    
-
+    if($scope.user.objectId){
+      var noPayOrder=new AV.Query('Orders');
+      noPayOrder.equalTo('userID',$scope.user.objectId)
+      noPayOrder.equalTo('goodID',Cgood.objectId);
+      noPayOrder.equalTo('status',0);
+      noPayOrder.first().then(function(resNoPayOrder){
+        if(resNoPayOrder){//发现重复的 更新数量和单价
+          var updateOrder= new AV.Query('Orders');
+          updateOrder.get(resNoPayOrder.toJSON().objectId, {
+              success: function(res) {
+                res.set('num', num);
+                res.set('amount',(num*Cgood.price).toFixed(2)-0);
+                res.save();
+                $state.go('tab.pay',{'payId':res.id});
+              },
+              error: function(object, error) {
+                // 失败了.
+                console.log(object);
+              }
+          });
+        }
+        else{
+          //提交订单
+          var order= new AV.Object('Orders');
+          order.set('userID',$scope.user._id)
+          order.set('goodID',Cgood.objectId);
+          order.set('num',num);
+          order.set('amount',(num*Cgood.price).toFixed(2)-0);
+          order.set('status',0);
+          order.save().then(function(res){
+            $state.go('tab.pay',{'payId':res.id});
+          },function(err){
+            console.log(err.message);
+          });
+        }
+      },function(err){
+        console.log(err.message);
+      });
+      
+    }
+    else
+      console.log('未登录');
   }
 })
 .controller('PayCtrl', function($scope) {
@@ -288,8 +297,11 @@ angular.module('starter.controllers', [])
   })
   
 })
-.controller('PhoneCtrl',  function($scope, $rootScope, $ionicPopup, $timeout, $state, CURUSER){
+.controller('PhoneCtrl',  function($scope, $rootScope, $ionicPopup, $timeout, $state, CURUSER, $stateParams){
   var phoneNumOK='';
+  $scope.user=$rootScope.isUserLogin();
+  if(!$scope.user)
+    return false;
   $scope.send=function(phoneNum){
     var checkPhone=/^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
     if(!checkPhone.test(phoneNum)|| checkPhone==null){
@@ -351,11 +363,10 @@ angular.module('starter.controllers', [])
           okText:'确定'
         });
         $timeout(function() {
-          var curUser = localStorage.getItem(CURUSER.obj);
-          var curUserObj=angular.fromJson(curUser);
-          curUserObj.phone=phoneNumOK;
+          
+          $scope.user.phone=phoneNumOK;
           var user=new AV.Query(AV.User);//修改电话
-          user.get(curUserObj._id, {
+          user.get($scope.user.objectId, {
               success: function(res) {
                 res.set('phone', phoneNumOK);
                 res.save();
@@ -366,8 +377,8 @@ angular.module('starter.controllers', [])
               }
           });
           myAlert.close();
-          localStorage.setItem(CURUSER.obj, angular.toJson(curUserObj));
-          $state.go('tab.order',{'goodId':'55e5052a00b0ded317feb220'});
+          localStorage.setItem(CURUSER.obj, angular.toJson($scope.user));
+          $state.go('tab.order',{'goodId': $stateParams.goodId});//..........................................
         }, 2000);
       }, function(err){
         var myAlert=$ionicPopup.alert({

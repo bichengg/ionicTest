@@ -12,7 +12,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
 .value('CURUSER',{
     obj:'AV/vgy82y1h97o3015mgyzelgmmn028tvcqxl0ruky8czvf5sy3/currentUser'
 })
-.run(function($ionicPlatform, GRAV, WX, $location, Service, $rootScope) {
+.run(function($ionicPlatform, GRAV, WX, $location, Service, $rootScope, CURUSER) {
   //leancloud配置
   AV.initialize(GRAV.appid,GRAV.appkey);
   //wx配置
@@ -93,8 +93,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       console.log('失败');
     }
   });
+  $rootScope.isUserLogin=function(){
+    var curUser = localStorage.getItem(CURUSER.obj);
+    curUser=curUser?angular.fromJson(curUser):null;
+    console.log(curUser);
+    return curUser;
+  };
   
-////////////////////////////////////////
+//-----------------------------------------------------
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -170,7 +176,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       cache:false
     })
   .state('tab.pay', {
-      url: '/pay',
+      url: '/pay/:payId',
       views: {
         'tab-goods': { 
           templateUrl: 'templates/pay.html',
@@ -189,7 +195,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     }
   })
   .state('tab.phone-bind', {
-    url: '/phone-bind',
+    url: '/phone-bind/:goodId',
     views: {
       'tab-account': {
         templateUrl: 'templates/phone-bind.html',
