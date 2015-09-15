@@ -3,11 +3,37 @@
   <ion-content class="main">
   	<div class="list">
       <a class="item" href="#">
-        <p>订单名称: xxxxxxx <br><br> 订单金额: 0.2元</p>
+        <p>订单名称: {{order.goodName}} <br><br> 订单金额: {{order.amount}} 元</p>
       </a>
     </div>
+    <div class="list">
+    	<li class="item item-checkbox">
+	        <label class="checkbox checkbox-balanced">
+	           <input type="radio" name="payType" ng-model="payType" value="1">
+	        </label>
+	        余额支付
+	        <span class="item-note">
+	          账户余额：¥ {{order.user.balance}}
+	        </span>
+	    </li>
+	    <li class="item item-checkbox">
+	        <label class="checkbox checkbox-balanced">
+	           <input type="radio" name="payType" ng-model="payType" value="2">
+	        </label>
+	        支付宝支付
+	    </li>
+	    <li class="item item-checkbox">
+	        <label class="checkbox checkbox-balanced">
+	           <input type="radio" name="payType" ng-model="payType" value="3">
+	        </label>
+	        微信支付
+	    </li>
+    </div>
     <div class="padding pt0">
-        <button class="button button-full button-energized" ng-click="subOrder(num)">支付</button>
+        <button class="button button-full button-energized" ng-click="subPay(payType)">支付</button>
+    </div>
+    <div class="padding pt0">
+        <button class="button button-full button-energized" bicheng>指令</button>
     </div>
   </ion-content>
 </ion-view>

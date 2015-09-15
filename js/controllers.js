@@ -288,9 +288,57 @@ angular.module('starter.controllers', [])
       console.log('未登录');
   }
 })
-.controller('PayCtrl', function($scope) {
-  
-  
+.controller('PayCtrl', function($scope, $stateParams, $rootScope, $ionicPopup) {
+  //获取用户
+  if(!$rootScope.userInfo){
+    $rootScope.noLoginGo();
+    return false;
+  }
+  var Corder={};
+  var order= new AV.Query('Orders');
+  order.equalTo('objectId',$stateParams.payId);
+  order.first().then(function(pay){
+    Corder=pay.toJSON();
+
+    Corder.user=$rootScope.userInfo;
+    var good=new AV.Query('Goods');
+    good.equalTo('objectId',pay.toJSON().goodID)
+    good.first().then(function(good){
+      Corder.goodName=good.toJSON().goodsName;
+    })
+    $scope.$apply(function(){
+      $scope.order=Corder;
+    });
+    console.log(Corder);
+  }).catch(function(err){
+    alert('订单详情出错了~')
+  });
+
+  $scope.payType="1";
+  $scope.subPay=function(payType){
+    switch(payType){
+      case "1":
+        if(Corder.amount>Corder.user.balance){
+          $ionicPopup.alert({
+            title:'余额不足',
+            subTitle: '请充值或换其他支付方式',
+            okType:'button-energized',
+            okText:'确定'
+          });
+        }
+        
+        break;
+      case "2":
+        alert(2)
+        break;
+      case "3":
+        alert(3)
+        break;
+      default:
+        alert(0)
+        break;
+    }
+  }
 })
 .controller('AccountCtrl', function($scope, $rootScope) {
   $scope.$apply(function(){
@@ -408,3 +456,4 @@ angular.module('starter.controllers', [])
     }
   }
 })
+
