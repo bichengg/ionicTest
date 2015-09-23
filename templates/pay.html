@@ -7,26 +7,14 @@
       </a>
     </div>
     <div class="list">
-    	<li class="item item-checkbox">
+	    <li class="item item-checkbox" ng-repeat="val in payTypes">
 	        <label class="checkbox checkbox-balanced">
-	           <input type="radio" name="payType" ng-model="payType" value="1">
+	           <input type="radio" name="payType" ng-model="$parent.payType" value="{{val.v}}">
 	        </label>
-	        余额支付
-	        <span class="item-note">
+	        {{val.name}}
+	        <span class="item-note" ng-if="val.v==1">
 	          账户余额：¥ {{order.user.balance}}
 	        </span>
-	    </li>
-	    <li class="item item-checkbox">
-	        <label class="checkbox checkbox-balanced">
-	           <input type="radio" name="payType" ng-model="payType" value="2">
-	        </label>
-	        支付宝支付
-	    </li>
-	    <li class="item item-checkbox">
-	        <label class="checkbox checkbox-balanced">
-	           <input type="radio" name="payType" ng-model="payType" value="3">
-	        </label>
-	        微信支付
 	    </li>
     </div>
     <div class="padding pt0">

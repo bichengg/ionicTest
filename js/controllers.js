@@ -314,7 +314,9 @@ angular.module('starter.controllers', [])
     alert('订单详情出错了~')
   });
 
+  $scope.payTypes=[{v:1, name:'余额支付'},{v:2, name:'支付宝支付'},{v:3, name:'微信支付'}];
   $scope.payType="1";
+
   $scope.subPay=function(payType){
     switch(payType){
       case "1":

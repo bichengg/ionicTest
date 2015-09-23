@@ -83,23 +83,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   wx.error(function(res){
      alert('WX出错');
   });
+
+  var isUserLogin=function(){
+    // var curUser = localStorage.getItem(CURUSER.obj);
+    // curUser=curUser?angular.fromJson(curUser):null;
+    var curUser = AV.User.current();
+    curUser = curUser?curUser.toJSON():null
+    console.log(curUser);
+    return curUser;
+  };
+
   // AV.User.logIn("test", "123123", {
   //   success: function(user) {
   //     // 成功了，现在可以做其他事情了.
   //     console.log('登录成功');
+  //     $rootScope.userInfo=isUserLogin();
   //   },
   //   error: function(user, error) {
   //     // 失败了.
   //     console.log('失败');
   //   }
   // });
-  var isUserLogin=function(){
-    var curUser = localStorage.getItem(CURUSER.obj);
-    curUser=curUser?angular.fromJson(curUser):null;
-    console.log(curUser);
-    return curUser;
-  };
+
+  
   $rootScope.userInfo=isUserLogin();
+  
   $rootScope.noLoginGo=function(){
     var myAlert=$ionicPopup.alert({
       title:'请登录',
@@ -113,9 +121,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     }, 4000);
   }
   $rootScope.$watch('userInfo',function(newValue, oldValue){
-    // console.log(newValue);
-
-    // console.log(oldValue);
+     // console.log(newValue);
+     // console.log(oldValue);
   });
   
 //-----------------------------------------------------
@@ -229,4 +236,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/dash');
 
-});
+})
+.directive('bicheng',function(){
+  // Runs during compile
+  return {
+    // name: '',
+    // priority: 1,
+    // terminal: true,
+    // scope: {}, // {} = isolate, true = child, false/undefined = no change
+    // controller: function($scope, $element, $attrs, $transclude) {},
+    // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+     restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
+    // template: '',
+    // templateUrl: '',
+    // replace: true,
+    // transclude: true,
+    // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+    link: function(scope, iElm, iAttrs, controller) {
+      iElm.on('click', function(e) {
+        console.log(e);
+      })
+    }
+  };
+})
